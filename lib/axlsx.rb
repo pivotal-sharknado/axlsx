@@ -122,6 +122,7 @@ module Axlsx
   # @param [String] s The snake case string to camelize
   # @return [String]
   def self.camel(s="", all_caps = true)
+    return s if s.to_s.match(/^_xlnm\./)
     s = s.to_s
     s = s.capitalize if all_caps
     s.gsub(/_(.)/){ $1.upcase }

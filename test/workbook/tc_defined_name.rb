@@ -1,14 +1,14 @@
 require 'tc_helper'
 
 class TestDefinedNames < Test::Unit::TestCase
-  def setup 
+  def setup
     @dn = Axlsx::DefinedName.new('Sheet1!A1:A1')
   end
 
   def test_initialize
     assert_equal('Sheet1!A1:A1', @dn.formula)
   end
-  
+
   def test_string_attributes
     %w(short_cut_key status_bar help description custom_menu comment).each do |attr|
       assert_raise(ArgumentError, 'only strings allowed in string attributes') { @dn.send("#{attr}=", 1) }
@@ -34,8 +34,9 @@ class TestDefinedNames < Test::Unit::TestCase
     @dn.name = '_xlnm.Print_Titles'
     @dn.hidden = true
     doc = Nokogiri::XML(@dn.to_xml_string)
-    assert(doc.xpath("//definedName[@name='_xlnm.Print_Titles']"))
-    assert(doc.xpath("//definedName[@hidden='true']"))
+    assert(doc.xpath("//definedName[@name='_xlnm.Print_Titles']").first)
+    assert(doc.xpath("//definedName[@hidden='true']").first)
     assert_equal('Sheet1!A1:A1', doc.xpath('//definedName').text)
   end
+
 end
